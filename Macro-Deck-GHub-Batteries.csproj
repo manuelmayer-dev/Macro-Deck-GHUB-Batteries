@@ -9,6 +9,7 @@
     <AssemblyName>G HUB Batteries</AssemblyName>
 	  <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	  <UseWindowsForms>true</UseWindowsForms>
+	  <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
