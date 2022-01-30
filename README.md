@@ -1,5 +1,7 @@
 # G HUB Batteries plugin for Macro Deck 2
-This plugin creates variables of the battery state of your Logitech devices
+This plugin creates variables of the battery state of your wireless Logitech devices
+
+### Logitech G HUB must be installed for this plugin to work!
 
 ## Variables
 | Variable | Description | Type |
