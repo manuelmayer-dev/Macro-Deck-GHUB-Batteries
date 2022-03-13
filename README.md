@@ -10,7 +10,7 @@ This plugin creates variables of the battery state of your wireless Logitech dev
 | DEVICENAME_charging | Indicates if the device is charging<br />Can be bound to the button state | Boolean |
 
 ### This is a plugin for [Macro Deck 2](https://github.com/SuchByte/Macro-Deck), it does NOT function as a standalone app
-<img height="64px" src="https://macrodeck.org/images/works_with_macrodeck2.png" />
+<img height="64px" src="https://macrodeck.org/images/macro_deck_2_official_plugin.png" />
 
 
 ## Third party licenses
