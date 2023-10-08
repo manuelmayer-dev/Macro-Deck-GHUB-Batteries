@@ -82,8 +82,8 @@ namespace SuchByte.GHUBBatteries
         private static void UpdateVariable(GHubDeviceModel gHubDevice, GHubDeviceBatteryModel gHubDeviceBattery)
         {
             MacroDeckLogger.Trace(Main.Instance, $"Updating variable for {gHubDevice.DeviceName}: {gHubDeviceBattery.BatteryPercentage}%");
-            VariableManager.SetValue(gHubDevice.DeviceName + "_battery_level", Math.Round(gHubDeviceBattery.BatteryPercentage, 0), VariableType.Integer, Main.Instance);
-            VariableManager.SetValue(gHubDevice.DeviceName + "_charging", gHubDeviceBattery.IsBatteryCharging, VariableType.Bool, Main.Instance);
+            VariableManager.SetValue(gHubDevice.DeviceName + "_battery_level", Math.Round(gHubDeviceBattery.BatteryPercentage, 0), VariableType.Integer, Main.Instance, null);
+            VariableManager.SetValue(gHubDevice.DeviceName + "_charging", gHubDeviceBattery.IsBatteryCharging, VariableType.Bool, Main.Instance, null);
         }
 
     }
