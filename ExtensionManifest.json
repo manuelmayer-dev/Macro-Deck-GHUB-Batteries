@@ -2,9 +2,11 @@
   "type": "Plugin",
   "name": "G HUB Batteries",
   "author": "Macro Deck",
-  "repository": "https://github.com/SuchByte/Macro-Deck-GHUB-Batteries",
+  "repository": "https://github.com/manuelmayer-dev/Macro-Deck-GHUB-Batteries",
   "packageId": "SuchByte.GHUBBatteries",
   "version": "2.0.0",
   "target-plugin-api-version": 40,
-  "dll": "G HUB Batteries.dll"
+  "target-macro-deck-version": "2.13.0-b11",
+  "dll": "G HUB Batteries.dll",
+  "author-discord-userid": 300244123569487873
 }
