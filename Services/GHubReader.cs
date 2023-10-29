@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
-using SuchByte.GHUBBatteries.Models;
+using SuchByte.GHUBBatteries.DataTypes;
+using SuchByte.GHUBBatteries.Repository;
 using SuchByte.MacroDeck.Logging;
 using SuchByte.MacroDeck.Variables;
 
@@ -11,79 +11,52 @@ namespace SuchByte.GHUBBatteries.Services;
 
 public class GHubReader
 {
-    private static readonly string GHubPath =
-        Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "LGHUB");
-    private static readonly string GHubSettingsDatabasePath = Path.Combine(GHubPath, "settings.db");
-
-    private const string GHubSettingsDatabaseBatterySection = "percentage";
-
-    private const int RefreshTimerIntervalSec = 10;
-
-    private static Timer _refreshTimer;
+    private const int UpdateInterval = 5;
 
     public static void Initialize()
     {
-        _refreshTimer = new Timer()
+        Task.Run(async () => await DoWork());
+    }
+
+    private static async Task DoWork()
+    {
+        while (true)
         {
-            Interval = RefreshTimerIntervalSec * 1000,
-            Enabled = true
-        };
-        _refreshTimer.Elapsed += RefreshTimer_Elapsed;
-        _refreshTimer.Start();
-        Task.Run(RefreshStats);
+            await UpdateBatteryInformation();
+            await Task.Delay(TimeSpan.FromSeconds(UpdateInterval));
+        }
     }
 
-    private static void RefreshTimer_Elapsed(object sender, ElapsedEventArgs e)
+    private static async Task UpdateBatteryInformation()
     {
-        Task.Run(RefreshStats);
-    }
+        List<DeviceBatteryData> data;
 
-    private static void RefreshStats()
-    {
         try
         {
-            if (!Directory.Exists(GHubPath))
-            {
-                MacroDeckLogger.Error(Main.Instance, $"G HUB folder not found at: {GHubPath}");
-                _refreshTimer.Stop();
-                return;
-            }
-
-            var settings = GHubDatabaseReader.DatabaseToJObject(GHubSettingsDatabasePath);
-            if (settings == null)
-            {
-                MacroDeckLogger.Error(Main.Instance, $"Error while reading G HUB database");
-                return;
-            }
-
-            var properties = settings.Properties().Where(p => p.Name.Contains("battery")).ToList();
-            foreach (var property in properties)
-            {
-                var splitName = property.Name.Split('/');
-                if (splitName.Length != 3 || splitName[2] != GHubSettingsDatabaseBatterySection)
-                {
-                    continue;
-                }
-
-                UpdateVariable(new GHubDeviceModel { DeviceName = splitName[1] },
-                    property.Value.ToObject<GHubDeviceBatteryModel>());
-            }
+            data = await GHubRepository.GetBatteryData().ToListAsync();
         }
         catch (Exception ex)
         {
-            MacroDeckLogger.Error(Main.Instance,
-                $"Error while parsing settings: {ex.Message + Environment.NewLine + ex.StackTrace}");
-            _refreshTimer.Stop();
+            MacroDeckLogger.Error(Main.Instance, $"Error while reading G HUB database\n{ex.Message}");
+            return;
+        }
+
+        foreach (var deviceBatteryData in data)
+        {
+            UpdateVariable(deviceBatteryData);
         }
     }
 
-    private static void UpdateVariable(GHubDeviceModel gHubDevice, GHubDeviceBatteryModel gHubDeviceBattery)
+    private static void UpdateVariable(DeviceBatteryData deviceBatteryData)
     {
-        MacroDeckLogger.Trace(Main.Instance,
-            $"Updating variable for {gHubDevice.DeviceName}: {gHubDeviceBattery.BatteryPercentage}%");
-        VariableManager.SetValue(gHubDevice.DeviceName + "_battery_level",
-            Math.Round(gHubDeviceBattery.BatteryPercentage, 0), VariableType.Integer, Main.Instance, null);
-        VariableManager.SetValue(gHubDevice.DeviceName + "_charging", gHubDeviceBattery.IsBatteryCharging,
-            VariableType.Bool, Main.Instance, null);
+        var deviceName = deviceBatteryData.DeviceName;
+        var batteryPercentage = Math.Round(deviceBatteryData.Percentage, 0);
+        var charging = deviceBatteryData.IsCharging;
+        var millivolts = deviceBatteryData.Millivolts;
+        VariableManager.SetValue($"{deviceName}_battery_level", batteryPercentage, VariableType.Integer, Main.Instance,
+            null);
+        VariableManager.SetValue($"{deviceName}_charging", charging, VariableType.Bool, Main.Instance, null);
+        VariableManager.SetValue($"{deviceName}_battery_millivolts", millivolts, VariableType.Integer, Main.Instance,
+            null);
     }
 }
