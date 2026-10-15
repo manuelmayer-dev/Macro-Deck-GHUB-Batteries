@@ -24,12 +24,13 @@ public sealed class GHubBatteryParserTests
 
 		var readings = Parse(json);
 
-		Assert.That(readings, Is.EqualTo(new[] { new GHubBatteryReading("proxwirelessheadset", 22, null) }));
+		Assert.That(readings, Is.EqualTo(new[] { new GHubBatteryReading("proxwirelessheadset", 22, false) }));
 	}
 
 	[TestCase(true, true)]
 	[TestCase(false, false)]
-	public void Reads_the_charging_flag_when_present(bool isCharging, bool expected)
+	[TestCase(null, false)]
+	public void Reads_the_charging_flag_and_treats_a_missing_one_as_not_charging(bool? isCharging, bool expected)
 	{
 		var readings = Parse(GHubJson.Settings(GHubJson.Battery("mouse", 50, isCharging)));
 
@@ -41,7 +42,7 @@ public sealed class GHubBatteryParserTests
 	{
 		var readings = Parse("""{"Battery/G915/Percentage":{"percentage":81.5}}""");
 
-		Assert.That(readings.Single(), Is.EqualTo(new GHubBatteryReading("G915", 81.5, null)));
+		Assert.That(readings.Single(), Is.EqualTo(new GHubBatteryReading("G915", 81.5, false)));
 	}
 
 	[Test]
