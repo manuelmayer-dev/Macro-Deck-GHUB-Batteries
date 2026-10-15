@@ -180,7 +180,7 @@ internal sealed class GHubBatteryMonitor : IAsyncDisposable
 		switch (availability)
 		{
 			case GHubAvailability.NotFound:
-				_logger.Warning("G HUB settings database not found under %LOCALAPPDATA%\\LGHUB. Is Logitech G HUB installed?");
+				_logger.Warning("G HUB settings database not found. Is Logitech G HUB installed?");
 				break;
 			case GHubAvailability.UnsupportedPlatform:
 				_logger.Warning("G HUB batteries are not supported on this platform");

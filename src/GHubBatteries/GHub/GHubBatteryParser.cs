@@ -76,6 +76,7 @@ internal static class GHubBatteryParser
 			return null;
 		}
 
+		// G HUB only writes isCharging while the device charges and drops the key once it is unplugged.
 		bool? isCharging = value.TryGetProperty("isCharging", out var charging)
 			? charging.ValueKind switch
 			{
@@ -83,7 +84,7 @@ internal static class GHubBatteryParser
 				JsonValueKind.False => false,
 				_ => null
 			}
-			: null;
+			: false;
 
 		return new GHubBatteryReading(deviceKey, level, isCharging);
 	}

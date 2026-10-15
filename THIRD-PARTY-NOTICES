@@ -87,7 +87,7 @@ SQLitePCLRaw.provider.e_sqlite3
 Bundled native libraries
 ================================================================================
 
-SQLite (e_sqlite3.dll, built and shipped by SQLitePCLRaw.lib.e_sqlite3)
+SQLite (e_sqlite3.dll on Windows, libe_sqlite3.dylib on macOS, built and shipped by SQLitePCLRaw.lib.e_sqlite3)
   License: blessing (public domain)
   URL: https://sqlite.org/copyright.html
   Note: The SQLite source code is dedicated to the public domain by its authors.

@@ -8,11 +8,24 @@ internal static class ServiceCollectionExtensions
 {
 	public static IServiceCollection AddGHubBatteries(this IServiceCollection services)
 	{
-		services.AddSingleton<IGHubSettingsLocation>(_ => OperatingSystem.IsWindows()
-			? new WindowsGHubSettingsLocation()
-			: new UnsupportedGHubSettingsLocation());
+		services.AddSingleton(CreateSettingsLocation());
 		services.AddSingleton<IGHubSettingsSource, SqliteGHubSettingsSource>();
 		services.AddSingleton<GHubBatteryMonitor>();
 		return services;
+	}
+
+	private static IGHubSettingsLocation CreateSettingsLocation()
+	{
+		if (OperatingSystem.IsWindows())
+		{
+			return new WindowsGHubSettingsLocation();
+		}
+
+		if (OperatingSystem.IsMacOS())
+		{
+			return new MacGHubSettingsLocation();
+		}
+
+		return new UnsupportedGHubSettingsLocation();
 	}
 }

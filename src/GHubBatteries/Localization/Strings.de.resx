@@ -22,6 +22,6 @@
     <value>Plattform nicht unterstützt</value>
   </data>
   <data name="Issues.UnsupportedPlatform.Description" xml:space="preserve">
-    <value>GHub Batteries unterstützt Logitech G HUB derzeit nur unter Windows.</value>
+    <value>GHub Batteries unterstützt Logitech G HUB derzeit nur unter Windows und macOS.</value>
   </data>
 </root>
