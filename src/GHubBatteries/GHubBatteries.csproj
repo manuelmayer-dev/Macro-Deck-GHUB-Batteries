@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <!-- Pinned rather than taken from the project file name: manifest.json declares this executable
+             name, and the generated Strings class lives in this namespace, so renaming the .csproj later
+             must neither rename the built executable nor move Strings out from under the code. -->
+        <AssemblyName>GHubBatteries</AssemblyName>
+        <RootNamespace>GHubBatteries</RootNamespace>
+        <IsPackable>false</IsPackable>
+        <UserSecretsId>GHubBatteries-PluginDevelopment</UserSecretsId>
+    </PropertyGroup>
+
+    <!-- Microsoft.NET.Sdk plus this framework reference, not Microsoft.NET.Sdk.Web: a plugin is a
+         headless process, and the framework reference is what supplies the hosting surface
+         MacroDeck.Plugin.Hosting builds on. -->
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- Build-time only: compile-time diagnostics for plugin authors, the [MacroDeckSdkUsage]
+             attribute the host reads to report real deprecation usage, and the source generator that
+             turns Localization/*.resx into the typed Strings class. Never shipped in the output. -->
+        <PackageReference Include="MacroDeck.Plugin.Analyzers" PrivateAssets="all" />
+        <!-- Referenced directly rather than relied on transitively through the SDK: LocalizedText and
+             the generated Strings class are part of this project's own source. -->
+        <PackageReference Include="MacroDeck.Localization" />
+        <PackageReference Include="MacroDeck.Plugin.Hosting" />
+        <PackageReference Include="MacroDeck.Plugin.Serilog" />
+        <PackageReference Include="MacroDeck.Sdk" />
+        <PackageReference Include="Microsoft.Data.Sqlite" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="GHubBatteries.Tests" />
+    </ItemGroup>
+
+    <!-- The SDK reads the manifest from the content root at startup and resolves the icon path against
+         that same root, so both have to land next to the built executable. -->
+    <ItemGroup>
+        <Content Include="manifest.json" CopyToOutputDirectory="PreserveNewest" />
+        <Content Include="Assets\icon.png" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+
+</Project>

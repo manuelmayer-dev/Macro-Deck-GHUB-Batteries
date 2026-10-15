@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- The default-language file. Every translation is checked against it and the fallback chain ends
+       here, so it is required even for a plugin that ships one language. Add a language by adding
+       Localization/Strings.<culture>.resx beside it (Strings.de.resx, Strings.pt-BR.resx).
+       A dotted key becomes a nested class: Issues.GHubNotFound.Title is Strings.Issues.GHubNotFound.Title(). -->
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Issues.GHubNotFound.Title" xml:space="preserve">
+    <value>Logitech G HUB not found</value>
+  </data>
+  <data name="Issues.GHubNotFound.Description" xml:space="preserve">
+    <value>Battery levels are read from Logitech G HUB. Install G HUB and start it once; your wireless devices then appear automatically.</value>
+  </data>
+  <data name="Issues.UnsupportedPlatform.Title" xml:space="preserve">
+    <value>Platform not supported</value>
+  </data>
+  <data name="Issues.UnsupportedPlatform.Description" xml:space="preserve">
+    <value>GHub Batteries currently supports Logitech G HUB on Windows only.</value>
+  </data>
+</root>

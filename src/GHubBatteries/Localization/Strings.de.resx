@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Issues.GHubNotFound.Title" xml:space="preserve">
+    <value>Logitech G HUB nicht gefunden</value>
+  </data>
+  <data name="Issues.GHubNotFound.Description" xml:space="preserve">
+    <value>Die Akkustände werden aus Logitech G HUB gelesen. Installiere G HUB und starte es einmal, danach erscheinen deine kabellosen Geräte automatisch.</value>
+  </data>
+  <data name="Issues.UnsupportedPlatform.Title" xml:space="preserve">
+    <value>Plattform nicht unterstützt</value>
+  </data>
+  <data name="Issues.UnsupportedPlatform.Description" xml:space="preserve">
+    <value>GHub Batteries unterstützt Logitech G HUB derzeit nur unter Windows.</value>
+  </data>
+</root>
