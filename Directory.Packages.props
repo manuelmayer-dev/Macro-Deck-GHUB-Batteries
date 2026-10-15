@@ -1,0 +1,34 @@
+<Project>
+
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+        <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+        <!-- Pinned to the Store's minimum SDK version; the release and CI workflows install the CLI of the
+             same version. Bump all three together. -->
+        <MacroDeckSdkVersion Condition="'$(MacroDeckSdkVersion)' == ''">3.0.0-beta.17</MacroDeckSdkVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="MacroDeck.Localization" Version="$(MacroDeckSdkVersion)" />
+        <PackageVersion Include="MacroDeck.Plugin.Analyzers" Version="$(MacroDeckSdkVersion)" />
+        <PackageVersion Include="MacroDeck.Plugin.Hosting" Version="$(MacroDeckSdkVersion)" />
+        <PackageVersion Include="MacroDeck.Plugin.Serilog" Version="$(MacroDeckSdkVersion)" />
+        <PackageVersion Include="MacroDeck.Plugin.Testing" Version="$(MacroDeckSdkVersion)" />
+        <PackageVersion Include="MacroDeck.Sdk" Version="$(MacroDeckSdkVersion)" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.13" />
+        <!-- Pinned transitively so the bundled native SQLite does not change without a notices update. -->
+        <PackageVersion Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.13" />
+        <PackageVersion Include="SQLitePCLRaw.core" Version="2.1.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
+        <PackageVersion Include="NUnit" Version="4.3.2" />
+        <PackageVersion Include="NUnit.Analyzers" Version="4.7.0" />
+        <PackageVersion Include="NUnit3TestAdapter" Version="5.0.0" />
+    </ItemGroup>
+
+</Project>

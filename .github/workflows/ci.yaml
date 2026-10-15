@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build and test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows only until the macOS settings location is implemented and tested.
+        os: [windows-latest]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Build
+        run: dotnet build GHubBatteries.slnx -c Release -warnaserror
+
+      - name: Test
+        run: dotnet test GHubBatteries.slnx -c Release --no-build
+
+      - name: Install the plugin CLI
+        run: dotnet tool install --global MacroDeck.Plugin.Cli --version 3.0.0-beta.17
+
+      # Proves the conformance suite on every supported platform before a release does.
+      - name: Conformance
+        run: macrodeck-plugin test --project src/GHubBatteries --required-only
+
+  package:
+    name: Pack and validate
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install the plugin CLI
+        run: dotnet tool install --global MacroDeck.Plugin.Cli --version 3.0.0-beta.17
+
+      - name: Build the package
+        run: macrodeck-plugin build --source src/GHubBatteries --output ./artifacts
+
+      - name: Validate the package
+        run: macrodeck-plugin validate --level publication --artifact ./artifacts/*.macroDeckPlugin

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <!-- Underscored test names, like the Macro Deck repository's own test projects. -->
+        <NoWarn>$(NoWarn);CA1707</NoWarn>
+        <!-- Expected values are written inline as array literals so each assertion reads on its own. -->
+        <NoWarn>$(NoWarn);CA1861</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MacroDeck.Plugin.Testing" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="NUnit" />
+        <PackageReference Include="NUnit.Analyzers" PrivateAssets="all" />
+        <PackageReference Include="NUnit3TestAdapter" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\GHubBatteries\GHubBatteries.csproj" />
+    </ItemGroup>
+
+</Project>

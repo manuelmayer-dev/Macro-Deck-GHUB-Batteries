@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "targets": {
+    "win-x64": {
+      "executable": "dotnet",
+      "arguments": [
+        "publish",
+        "GHubBatteries.csproj",
+        "-c",
+        "Release",
+        "-r",
+        "win-x64",
+        "--self-contained",
+        "false",
+        "-p:UseAppHost=false",
+        "-o",
+        "bin/publish/win-x64"
+      ],
+      "output": "bin/publish/win-x64"
+    }
+  }
+}

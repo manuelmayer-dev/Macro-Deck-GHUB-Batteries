@@ -1,0 +1,31 @@
+{
+  "$schema": "https://schemas.macro-deck.app/plugin-manifest-v1.schema.json",
+  "manifestVersion": 1,
+  "id": "com.suchbyte.ghub-batteries",
+  "name": "GHub Batteries",
+  "version": "3.0.0",
+  "description": "Shows the battery level of your wireless Logitech G HUB devices in Macro Deck. Not affiliated with or endorsed by Logitech.",
+  "icon": "Assets/icon.png",
+  "entrypoints": {
+    "win-x64": {
+      "executable": "runtimes/win-x64/GHubBatteries.dll",
+      "runtime": {
+        "kind": "FrameworkDependent",
+        "dotnetVersion": "10.0"
+      }
+    }
+  },
+  "publisher": {
+    "name": "SuchByte"
+  },
+  "license": "MIT",
+  "repository": "https://github.com/manuelmayer-dev/Macro-Deck-GHUB-Batteries",
+  "compatibility": {
+    "macroDeck": ">=3.0.0-0"
+  },
+  "ai": {
+    "interaction": false,
+    "generatedContent": false,
+    "generatedAssets": false
+  }
+}
