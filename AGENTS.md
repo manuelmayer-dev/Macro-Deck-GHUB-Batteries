@@ -26,10 +26,10 @@ src/GHubBatteries/
   GHubBatteriesIntegration.cs    IPluginIntegration + IBatteryProvider + IIntegrationIssueProvider, thin glue
   Batteries/GHubBatteryMonitor.cs   poll loop, diff against what was published, connected state, limits
   Batteries/BatteryDeviceMapper.cs  G HUB reading -> BatteryDevice (pure)
-  GHub/IGHubSettingsLocation.cs  settings.db path per OS; add a macOS implementation here
+  GHub/IGHubSettingsLocation.cs  settings.db path per OS (Windows, macOS)
   GHub/SqliteGHubSettingsSource.cs  read-only SQLite access to settings.db
   GHub/GHubBatteryParser.cs      battery/<device>/percentage entries from the settings JSON (pure)
-  manifest.json, macrodeck-build.json   identity and the win-x64 publish target
+  manifest.json, macrodeck-build.json   identity and the win-x64 and osx-arm64 publish targets
   Localization/Strings.resx, Strings.de.resx
   Assets/icon.png
 tests/GHubBatteries.Tests/       NUnit tests: parser, mapper, monitor, SQLite source, plugin harness
@@ -37,15 +37,18 @@ tests/GHubBatteries.Tests/       NUnit tests: parser, mapper, monitor, SQLite so
 
 ## G HUB specifics
 
-- G HUB keeps one row in table `data` of `%LOCALAPPDATA%\LGHUB\settings.db` (WAL mode); column `file` is a
-  UTF-8 JSON object. Battery entries are `"battery/<device>/percentage": {"percentage": 22, "millivolts":
-  3672, "time": "...", "isCharging": true}`; `isCharging` is missing for some devices. Ignore
-  `battery/<device>/warning` and every other key.
+- G HUB keeps one row in table `data` of `settings.db` (WAL mode), at `%LOCALAPPDATA%\LGHUB\` on Windows
+  and `~/Library/Application Support/LGHUB/` on macOS, with the same schema and JSON on both. Column
+  `file` is a UTF-8 JSON object. Battery entries are
+  `"battery/<device>/percentage": {"percentage": 22, "millivolts": 3672, "time": "...", "isCharging": true}`;
+  G HUB writes `isCharging` only while the device charges and drops the key when it is unplugged, so a
+  missing key means discharging. Ignore `battery/<device>/warning` and every other key.
 - Open the database read-only, unpooled and with a short timeout. Never write to it.
 - Device ids are the lowercased G HUB key. They end up in users' widgets and variable names, so never
   change how they are derived.
-- Platforms: only win-x64 is declared. Adding macOS means a new `IGHubSettingsLocation`, an `osx-*`
-  entrypoint and build target, the CI matrix and the README, in one change, tested on a Mac.
+- Platforms: win-x64 and osx-arm64 are declared (Macro Deck ships no Intel macOS build). Linux has no
+  G HUB and reports the unsupported-platform issue. `entrypoints`, `macrodeck-build.json`, the CI matrix,
+  the README and the unsupported-platform issue text must name the same platforms.
 
 ## Store gate
 
@@ -375,4 +378,4 @@ match.
 `THIRD-PARTY-NOTICES` lists what the published package ships. Regenerate it whenever a dependency changes:
 run `macrodeck-plugin build`, then the plugin creator's `inventory-dependencies.py` on
 `src/GHubBatteries/bin/publish/win-x64` with `--notices`, and keep the hand-written "Bundled native
-libraries" section for SQLite.
+libraries" section for SQLite (`e_sqlite3.dll` and `libe_sqlite3.dylib`).

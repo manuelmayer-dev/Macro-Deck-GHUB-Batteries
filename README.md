@@ -16,13 +16,10 @@ GHub Batteries is a community plugin. It is not affiliated with, endorsed by or 
 
 ## Requirements
 
-- Macro Deck 3 on **Windows** (x64).
+- Macro Deck 3 on **Windows** (x64) or **macOS** (Apple silicon).
 - [Logitech G HUB](https://www.logitechg.com/innovation/g-hub.html) installed and running. The plugin
   reads G HUB's local settings database, which G HUB only updates while it runs; it does not need G HUB
   to be signed in.
-
-macOS is not supported yet. G HUB exists for macOS, and the plugin is structured so the macOS settings
-location can be added later.
 
 ## Usage
 
@@ -53,9 +50,12 @@ provided.
 
 ## How it works and what it accesses
 
-Every five seconds the plugin reads G HUB's settings database at `%LOCALAPPDATA%\LGHUB\settings.db`
-in read-only mode, extracts the `battery/<device>/percentage` entries and publishes only the devices
-whose values changed.
+Every five seconds the plugin reads G HUB's settings database in read-only mode, extracts the
+`battery/<device>/percentage` entries and publishes only the devices whose values changed. The database
+is at:
+
+- Windows: `%LOCALAPPDATA%\LGHUB\settings.db`
+- macOS: `~/Library/Application Support/LGHUB/settings.db`
 
 - **No network access.** Nothing leaves your computer; the data goes only to Macro Deck.
 - **Read-only.** The plugin opens the database read-only and never changes G HUB's settings.
@@ -70,7 +70,8 @@ whose values changed.
   showing its last level as connected until G HUB updates or removes the entry.
 - While G HUB is closed, or while its database cannot be read, the last known values stay shown as
   connected; they are not live until G HUB runs again.
-- Not every device reports whether it is charging; those show an unknown charge state.
+- G HUB only stores a charging flag while a device charges, so a device without one shows as
+  discharging. An unreadable flag shows an unknown charge state.
 - The device kind (headphones, mouse, keyboard, speaker) is guessed from the key and falls back to
   `other`.
 
