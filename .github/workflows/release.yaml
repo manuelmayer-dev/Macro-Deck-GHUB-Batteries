@@ -1,0 +1,18 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    uses: Macro-Deck-App/GitHub-Actions/.github/workflows/publish-plugin.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      version: ${{ github.event.release.tag_name }}
+      source: src/GHubBatteries
+      # Pinned to the SDK version; the workflow default resolves the CLI by SemVer order and can pick an older preview.
+      cli-version: 3.0.0-beta.17
+      changelog: ${{ github.event.release.body }}
