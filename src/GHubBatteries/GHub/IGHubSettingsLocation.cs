@@ -15,6 +15,16 @@ internal sealed class WindowsGHubSettingsLocation : IGHubSettingsLocation
 		"settings.db");
 }
 
+internal sealed class MacGHubSettingsLocation : IGHubSettingsLocation
+{
+	public string GetSettingsDatabasePath() => Path.Combine(
+		Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+		"Library",
+		"Application Support",
+		"LGHUB",
+		"settings.db");
+}
+
 internal sealed class UnsupportedGHubSettingsLocation : IGHubSettingsLocation
 {
 	public string? GetSettingsDatabasePath() => null;
